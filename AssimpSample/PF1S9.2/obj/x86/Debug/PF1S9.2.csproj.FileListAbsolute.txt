@@ -1,0 +1,51 @@
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\AssimpLib\Assimp32.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\AssimpLib\Assimp64.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\AssimpLib\AssimpNet.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\3D Models\board\board.obj
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\3D Models\dart\dart.obj
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\3D Models\Touareg\Touareg.3DS
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\AssimpSample.exe.config
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\AssimpSample.exe
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\AssimpSample.pdb
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\AssimpNet.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\SharpGL.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\bin\Debug\SharpGL.WPF.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\PF1S9.2.csprojAssemblyReference.cache
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\MainWindow.baml
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\MainWindow.g.cs
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\App.g.cs
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample_Content.g.cs
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample_MarkupCompile.cache
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.g.resources
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.Properties.Resources.resources
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\PF1S9.2.csproj.GenerateResource.cache
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\PF1S9.2.csproj.CoreCompileInputs.cache
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\PF1S9.2.csproj.CopyComplete
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.exe
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\AssimpSample\obj\x86\Debug\AssimpSample.pdb
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\AssimpLib\Assimp32.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\AssimpLib\Assimp64.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\AssimpLib\AssimpNet.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\3D Models\board\board.obj
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\3D Models\dart\dart.obj
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\AssimpSample.exe.config
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\AssimpSample.exe
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\AssimpSample.pdb
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\AssimpNet.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\SharpGL.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\bin\Debug\SharpGL.WPF.dll
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\PF1S9.2.csprojAssemblyReference.cache
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\MainWindow.baml
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\MainWindow.g.cs
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\App.g.cs
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\AssimpSample_Content.g.cs
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\AssimpSample_MarkupCompile.cache
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\AssimpSample.g.resources
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\AssimpSample.Properties.Resources.resources
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\PF1S9.2.csproj.GenerateResource.cache
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\PF1S9.2.csproj.CoreCompileInputs.cache
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\PF1S9.2.csproj.CopyComplete
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\AssimpSample.exe
+C:\Users\user1\Desktop\Vezbe4\AssimpSample\PF1S9.2\obj\x86\Debug\AssimpSample.pdb
