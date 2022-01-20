@@ -6,6 +6,21 @@
     <Grid>
 
         <DockPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="3">
+                <Label>Board position:</Label>
+                <TextBox Width="50" Name="board_position" Text="0.0"></TextBox>
+                <Label>Reflector ambient:</Label>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Background="IndianRed" Width="25" Name="red" Text="1.0"></TextBox>
+                    <TextBox Background="LightGreen" Width="25" Name="green" Text="0.0"></TextBox>
+                    <TextBox Background="SkyBlue" Width="25" Name="blue" Text="0.0"></TextBox>
+                </StackPanel>
+                <Label>Darts scale:</Label>
+                <TextBox Width="50" Name="scale_darts" Text="0.2"></TextBox>
+
+                <Button Margin="5 0 5 0" Padding="5 0 5 0" Name="okBtn"
+                        Click="OkBtn_Click">OK</Button>
+            </StackPanel>
             <!-- The OpenGL control provides a OpenGL drawing surface. -->
             <sharpGL:OpenGLControl Name="openGLControl"
                     OpenGLDraw="OpenGLControl_OpenGLDraw"

@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using SharpGL.SceneGraph;
 using SharpGL;
 using Microsoft.Win32;
-
+using System.Globalization;
 
 namespace AssimpSample
 {
@@ -86,34 +86,113 @@ namespace AssimpSample
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
-            {
-                case Key.F10: this.Close(); break;
-                case Key.W: m_world.RotationX += 5.0f; break;
-                case Key.S: m_world.RotationX -= 5.0f; break;
-                case Key.A: m_world.RotationY += 5.0f; break;
-                case Key.D: m_world.RotationY -= 5.0f; break;
-                case Key.Add: m_world.SceneDistance -= 10.0f; break;
-                case Key.Subtract: m_world.SceneDistance += 10.0f; break;
-                case Key.F2:
-                    OpenFileDialog opfModel = new OpenFileDialog();
-                    bool result = (bool) opfModel.ShowDialog();
-                    if (result)
-                    {
+            if (!m_world.Animation) { 
+                switch (e.Key)
+                {
+                    case Key.F5: this.Close(); break;
+                    case Key.T:
+                        if (m_world.RotationX < 90)
+                            m_world.RotationX += 5.0f; break;
+                    case Key.G:
+                        if (m_world.RotationX > 0)
+                            m_world.RotationX -= 5.0f; break;
+                    case Key.F: m_world.RotationY += 5.0f; break;
+                    case Key.H: m_world.RotationY -= 5.0f; break;
+                    case Key.Add: m_world.SceneDistance -= 10.0f; break;
+                    case Key.Subtract: m_world.SceneDistance += 10.0f; break;
+                    case Key.F2:
+                        OpenFileDialog opfModel = new OpenFileDialog();
+                        bool result = (bool)opfModel.ShowDialog();
+                        if (result)
+                        {
 
-                        try
-                        {
-                            World newWorld = new World(Directory.GetParent(opfModel.FileName).ToString(), Path.GetFileName(opfModel.FileName), Directory.GetParent(opfModel.FileName).ToString(), Path.GetFileName(opfModel.FileName), (int)openGLControl.Width, (int)openGLControl.Height, openGLControl.OpenGL);
-                            m_world.Dispose();
-                            m_world = newWorld;
-                            m_world.Initialize(openGLControl.OpenGL);
+                            try
+                            {
+                                World newWorld = new World(Directory.GetParent(opfModel.FileName).ToString(), Path.GetFileName(opfModel.FileName), Directory.GetParent(opfModel.FileName).ToString(), Path.GetFileName(opfModel.FileName), (int)openGLControl.Width, (int)openGLControl.Height, openGLControl.OpenGL);
+                                m_world.Dispose();
+                                m_world = newWorld;
+                                m_world.Initialize(openGLControl.OpenGL);
+                            }
+                            catch (Exception exp)
+                            {
+                                MessageBox.Show("Neuspesno kreirana instanca OpenGL sveta:\n" + exp.Message, "GRESKA", MessageBoxButton.OK);
+                            }
                         }
-                        catch (Exception exp)
-                        {
-                            MessageBox.Show("Neuspesno kreirana instanca OpenGL sveta:\n" + exp.Message, "GRESKA", MessageBoxButton.OK );
-                        }
-                    }
-                    break;
+                        break;
+                    case Key.C:
+                        m_world.Animation = true;
+                        m_world.AnimationStart();
+                        break;
+                }
+            }
+        }
+
+        private void OkBtn_Click(object sender, RoutedEventArgs e)
+        {
+           try
+            {
+                float red = float.Parse(this.red.Text, CultureInfo.InvariantCulture.NumberFormat);
+                if (red < 0.0f || red > 1.0f)
+                {
+                    MessageBox.Show("Value RED must be a number between 0.0 and 1.0!");
+                }
+                else
+                {
+                    m_world.AmbientR = red;
+                }
+
+                float green = float.Parse(this.green.Text, CultureInfo.InvariantCulture.NumberFormat);
+                if (green < 0.0f || green > 1.0f)
+                {
+                    MessageBox.Show("Value GREEN must be a number between 0.0 and 1.0!");
+                }
+                else
+                {
+                    m_world.AmbientG = green;
+                }
+
+                float blue = float.Parse(this.blue.Text, CultureInfo.InvariantCulture.NumberFormat);
+                if (blue < 0.0f || blue > 1.0f)
+                {
+                    MessageBox.Show("Value BLUE must be a number between 0.0 and 1.0!");
+                }
+                else
+                {
+                    m_world.AmbientB = blue;
+                }
+
+            }
+            catch
+            {
+                MessageBox.Show("Value of RED, GREEN and BLUE must be a number between 0.0 and 1.0!");
+            }
+
+            //Translate board
+            try
+            {
+                float number = float.Parse(this.board_position.Text, CultureInfo.InvariantCulture.NumberFormat);
+                if (number < -7.0 || number > 3.0)
+                {
+                    MessageBox.Show("Value must be between -7 and 3.");
+                }
+                else
+                {
+                    m_world.Board_position = float.Parse(this.board_position.Text);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Translation must be a number!");
+            }
+
+            //Skale dart
+            try
+            {
+                m_world.Dart_scale = float.Parse(this.scale_darts.Text, CultureInfo.InvariantCulture.NumberFormat);
+            }
+            catch
+            {
+                MessageBox.Show("Scaling must be a number!");
             }
         }
     }

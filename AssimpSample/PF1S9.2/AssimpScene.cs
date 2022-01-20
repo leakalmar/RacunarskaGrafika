@@ -50,6 +50,7 @@ namespace AssimpSample
         /// </summary>
         private readonly String m_sceneFileName;
 
+
         /////<summary>
         ///// Generator slucajnih brojeva, koji sluzi za generisanje boje poligona
         /////</summary>

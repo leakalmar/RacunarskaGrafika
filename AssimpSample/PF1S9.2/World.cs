@@ -14,7 +14,9 @@ using SharpGL.SceneGraph.Primitives;
 using SharpGL.SceneGraph.Quadrics;
 using SharpGL.SceneGraph.Core;
 using SharpGL;
-using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace AssimpSample
 {
@@ -53,6 +55,45 @@ namespace AssimpSample
         private readonly float m_xtranslate = 0.0f;
         private readonly float m_ytranslate = 0.0f;
 
+        private float m_dart1_position_x = 5f;
+        private float m_dart2_position_x = 6f;
+        private float m_dart3_position_x = 7f;
+        private float m_dart1_position_y = 0f;
+        private float m_dart2_position_y = 0f;
+        private float m_dart3_position_y = 0f;
+        private float m_dart1_position_z = 20f;
+        private float m_dart2_position_z = 20f;
+        private float m_dart3_position_z = 20f;
+        private float m_dart1_rotation_x = 90f;
+        private float m_dart2_rotation_x = 90f;
+        private float m_dart3_rotation_x = 90f;
+        private float m_dart1_rotation_y = 0f;
+        private float m_dart2_rotation_y = 0f;
+        private float m_dart3_rotation_y = 0f;
+        private float m_dart1_rotation_z = 0f;
+        private float m_dart2_rotation_z = 0f;
+        private float m_dart3_rotation_z = 0f;
+        private float m_dart_scale = 0.2f;
+        private float m_board_scale = 0;
+        private float m_board_position = 0f;
+        private float m_ambientR = 0.5f;
+        private float m_ambientG = 0f;
+        private float m_ambientB = 0f;
+
+        private DispatcherTimer timer1;
+        private DispatcherTimer timer2;
+        private DispatcherTimer timer3;
+        private DispatcherTimer timer4;
+        private DispatcherTimer timer5;
+
+
+        private Sphere yellowLamp;
+
+        private Sphere redLapmp;
+
+        private uint[] m_textures;
+        private string[] m_textureFiles = { "..//..//images//brick.jpg"};
+
         /// <summary>
         ///	 Sirina OpenGL kontrole u pikselima.
         /// </summary>
@@ -62,6 +103,8 @@ namespace AssimpSample
         ///	 Visina OpenGL kontrole u pikselima.
         /// </summary>
         private int m_height;
+
+        private bool animation;
 
         #endregion Atributi
 
@@ -130,6 +173,117 @@ namespace AssimpSample
             set { m_height = value; }
         }
 
+        public bool Animation
+        {
+            get { return animation; }
+            set { animation = value; }
+        }
+
+        public float Dart1_X
+        {
+            get { return m_dart1_position_x; }
+            set { m_dart1_position_x = value; }
+        }
+        public float Dart2_X
+        {
+            get { return m_dart2_position_x; }
+            set { m_dart2_position_x = value; }
+        }
+        public float Dart3_X
+        {
+            get { return m_dart3_position_x; }
+            set { m_dart3_position_x = value; }
+        }
+        public float Dart1_Y
+        {
+            get { return m_dart1_position_y; }
+            set { m_dart1_position_y = value; }
+        }
+        public float Dart2_Y
+        {
+            get { return m_dart2_position_y; }
+            set { m_dart2_position_y = value; }
+        }
+        public float Dart3_Y
+        {
+            get { return m_dart3_position_y; }
+            set { m_dart3_position_y = value; }
+        }
+        public float Dart1_Z
+        {
+            get { return m_dart1_position_z; }
+            set { m_dart1_position_z = value; }
+        }
+        public float Dart2_Z
+        {
+            get { return m_dart2_position_z; }
+            set { m_dart2_position_z = value; }
+        }
+        public float Dart3_Z
+        {
+            get { return m_dart3_position_z; }
+            set { m_dart3_position_z = value; }
+        }
+        public float Dart1_rotation_x
+        {
+            get { return m_dart1_rotation_x; }
+            set { m_dart1_rotation_x = value; }
+        }
+        public float Dart2_rotation_x
+        {
+            get { return m_dart2_rotation_x; }
+            set { m_dart2_rotation_x = value; }
+        }
+        public float Dart3_rotation_x
+        {
+            get { return m_dart3_rotation_x; }
+            set { m_dart3_rotation_x = value; }
+        }
+        public float Dart1_rotation_y
+        {
+            get { return m_dart1_rotation_y; }
+            set { m_dart1_rotation_y = value; }
+        }
+        public float Dart2_rotation_y
+        {
+            get { return m_dart2_rotation_y; }
+            set { m_dart2_rotation_y = value; }
+        }
+        public float Dart3_rotation_y
+        {
+            get { return m_dart3_rotation_y; }
+            set { m_dart3_rotation_y = value; }
+        }
+        public float Dart_scale
+        {
+            get { return m_dart_scale; }
+            set { m_dart_scale = value; }
+        }
+        public float Board_scale
+        {
+            get { return m_board_scale; }
+            set { m_board_scale = value; }
+        }
+        public float Board_position
+        {
+            get { return m_board_position; }
+            set { m_board_position = value; }
+        }
+        public float AmbientR
+        {
+            get { return m_ambientR; }
+            set { m_ambientR = value; }
+        }
+        public float AmbientG
+        {
+            get { return m_ambientG; }
+            set { m_ambientG = value; }
+        }
+        public float AmbientB
+        {
+            get { return m_ambientB; }
+            set { m_ambientB = value; }
+        }
         #endregion Properties
 
         #region Konstruktori
@@ -143,6 +297,7 @@ namespace AssimpSample
             this.m_scene_dart = new AssimpScene(scenePathDart, sceneFileNameDart, gl);
             this.m_width = width;
             this.m_height = height;
+            m_textures = new uint[1];
         }
 
         /// <summary>
@@ -165,9 +320,60 @@ namespace AssimpSample
             gl.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             gl.Color(1f, 0f, 0f);
             // Model sencenja na flat (konstantno)
-            //gl.ShadeModel(OpenGL.GL_FLAT);
             gl.Enable(OpenGL.GL_DEPTH_TEST);
             gl.Enable(OpenGL.GL_CULL_FACE);
+            gl.ShadeModel(OpenGL.GL_FLAT);
+
+            gl.Enable(OpenGL.GL_COLOR_MATERIAL);
+            gl.ColorMaterial(OpenGL.GL_FRONT, OpenGL.GL_AMBIENT_AND_DIFFUSE);
+
+            SetUpLighting(gl);
+
+
+            yellowLamp = new Sphere();
+            yellowLamp.CreateInContext(gl);
+            yellowLamp.Radius = 0.5f;
+            yellowLamp.Material = new SharpGL.SceneGraph.Assets.Material();
+
+
+            redLapmp = new Sphere();
+            redLapmp.CreateInContext(gl);
+            redLapmp.Radius = 0.5f;
+            redLapmp.Material = new SharpGL.SceneGraph.Assets.Material();
+
+            // Teksture se primenjuju sa parametrom decal
+             gl.Enable(OpenGL.GL_TEXTURE_2D);
+             gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_DECAL);
+
+             //Ucitaj slike i kreiraj teksture
+             gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MIN_FILTER, OpenGL.GL_LINEAR_MIPMAP_LINEAR);  // Linear mipmap Filtering
+             gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MAG_FILTER, OpenGL.GL_LINEAR_MIPMAP_LINEAR);  // Linear mipmap Filtering
+             gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_S, OpenGL.GL_REPEAT);
+             gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_T, OpenGL.GL_REPEAT);
+
+            gl.GenTextures(1, m_textures);
+            for (int i = 0; i < 1; ++i)
+            {
+                // Pridruzi teksturu odgovarajucem identifikatoru
+                gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[i]);
+
+                // Ucitaj sliku i podesi parametre teksture
+                Bitmap image = new Bitmap(m_textureFiles[i]);
+                // rotiramo sliku zbog koordinantog sistema opengl-a
+                image.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                Rectangle rect = new Rectangle(0, 0, image.Width, image.Height);
+                // RGBA format (dozvoljena providnost slike tj. alfa kanal)
+                BitmapData imageData = image.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadOnly,
+                                                      System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                gl.Build2DMipmaps(OpenGL.GL_TEXTURE_2D, (int)OpenGL.GL_RGBA8, image.Width, image.Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, imageData.Scan0);
+
+                image.UnlockBits(imageData);
+                image.Dispose();
+            }
+
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
+
             m_scene_board.LoadScene();
             m_scene_board.Initialize();
             m_scene_dart.LoadScene();
@@ -189,12 +395,69 @@ namespace AssimpSample
             gl.LoadIdentity();                // resetuj ModelView Matrix
         }
 
+        public void SetUpLighting(OpenGL gl)
+        {
+            // tackasto zuto osvetljenje
+            float[] light0pos = new float[] { 0f, 0f, 0f, 1.0f };
+            float[] light0ambient = new float[] { 0.8f, 0.8f, 0.5f, 1.0f };
+            float[] light0diffuse = new float[] { 1f, 1f, 0.5f, 1.0f };
+
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, light0pos);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, light0ambient);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, light0diffuse);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPOT_CUTOFF, 180.0f);  // za tackasto osvetljenje
+
+            
+            float[] direction = new float[] { 1.5f, 0.3f, -43.2f, 1.0f };
+            float[] light1pos = new float[] { 0, 0, 0 };
+            float[] light1ambient = new float[] { 0.4f, 0f, 0f, 1.0f };
+            float[] light1diffuse = new float[] { 0.5f, 0f, 0f, 1.0f };
+
+            // crveno svetlo 1
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_POSITION, light1pos);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_AMBIENT, light1ambient);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_DIFFUSE, light1diffuse);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_CUTOFF, 30.0f);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_EXPONENT, 5.0f);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_DIRECTION, direction);
+
+            
+            gl.Enable(OpenGL.GL_LIGHTING);
+            gl.Enable(OpenGL.GL_LIGHT0);
+            gl.Enable(OpenGL.GL_LIGHT1);
+
+            gl.Enable(OpenGL.GL_NORMALIZE);
+
+        }
+
         /// <summary>
         ///  Iscrtavanje OpenGL kontrole.
         /// </summary>
         public void Draw(OpenGL gl)
         {
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
+
+            gl.LoadIdentity();
+
+            gl.PushMatrix();
+            float[] pos = new float[] { 0f, 10f, 10.0f, 1.0f };
+            gl.Color(0.8f, 0.8f, 0.5f);
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, pos);
+            gl.Translate(pos[0], pos[1], pos[2]);
+            gl.PopMatrix();
+
+            gl.PushMatrix();
+            float[] pos2 = new float[] { 0f, 4f, 1.0f, 1.0f };
+            float[] dir = new float[] { 1f, 0f, 0f, 1f };
+            float[] ambient = new float[] { m_ambientR, m_ambientG, m_ambientB, 1.0f };
+            gl.Color(m_ambientR, m_ambientG, m_ambientB);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_POSITION, pos2);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_DIRECTION, dir);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_AMBIENT, ambient);
+            gl.Translate(pos[0], pos[1], pos[2]);
+            gl.PopMatrix();
+
+            gl.LookAt(0f, 0f, -20f, 0f, 0f, -50f, 0f, 1f, 0f);
 
             gl.PushMatrix();
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
@@ -206,20 +469,28 @@ namespace AssimpSample
             gl.Rotate(m_yRotation, 0.0f, 1.0f, 0.0f);
 
             gl.PushMatrix();
-            DrawDart(gl, 0);
+            DrawYellowLight(gl);
             gl.PopMatrix();
 
             gl.PushMatrix();
-            DrawDart(gl, 1);
+            DrawRedLight(gl);
+            gl.PopMatrix();
+
+            gl.PushMatrix();
+            DrawDart(gl, m_dart1_position_x, m_dart1_position_y, m_dart1_position_z, m_dart1_rotation_x, m_dart1_rotation_y, m_dart1_rotation_z, m_dart_scale);
+            gl.PopMatrix();
+
+            gl.PushMatrix();
+            DrawDart(gl, m_dart2_position_x, m_dart2_position_y, m_dart2_position_z, m_dart2_rotation_x, m_dart2_rotation_y, m_dart2_rotation_z, m_dart_scale);
             gl.PopMatrix();
 
 
             gl.PushMatrix();
-            DrawDart(gl, 2);
+            DrawDart(gl, m_dart3_position_x, m_dart3_position_y, m_dart3_position_z, m_dart3_rotation_x, m_dart3_rotation_y, m_dart3_rotation_z, m_dart_scale);
             gl.PopMatrix();
 
             gl.PushMatrix();
-            DrawBoard(gl);
+            DrawBoard(gl, m_board_scale);
             gl.PopMatrix();
 
             gl.PushMatrix();
@@ -256,18 +527,52 @@ namespace AssimpSample
             gl.Flush();
         }
 
-        public void DrawDart(OpenGL gl, int next)
+        #region Draw
+
+        public void DrawYellowLight(OpenGL gl)
         {
-            gl.Translate(5f + next, 0f, 20f);
-            gl.Rotate(90f, 1.0f, 0.0f, 0.0f);
-            gl.Scale(0.2f, 0.2f, 0.2f);
+
+            float[] pos = new float[] { 0f, 10f, 10.0f, 1.0f };
+            gl.Color(0.8f, 0.8f, 0.5f);
+            gl.Translate(pos[0], pos[1], pos[2]);
+            yellowLamp.Material.Bind(gl);
+            yellowLamp.Render(gl, RenderMode.Render);
+        }
+
+        public void DrawRedLight(OpenGL gl)
+        {
+            float[] pos = new float[] { 0f, 4f, 1.0f, 1.0f };
+            float[] dir = new float[] {-1f, 0f, 0f, 1f };
+            float[] ambient = new float[] { m_ambientR, m_ambientG, m_ambientB,0.5f };
+            gl.Color(m_ambientR, m_ambientG, m_ambientB);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_POSITION, pos);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_SPOT_DIRECTION, dir);
+            gl.Light(OpenGL.GL_LIGHT1, OpenGL.GL_AMBIENT, ambient);
+            gl.Translate(pos[0], pos[1], pos[2]);
+            redLapmp.Material.Bind(gl);
+            redLapmp.Render(gl, RenderMode.Render);
+        }
+
+        public void DrawDart(OpenGL gl, float x, float y, float z, float rotation_x, float rotation_y, float rotation_z, float scale)
+        {
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_MODULATE);
+            gl.Translate(x, y, z);
+            gl.Rotate(rotation_x, 1.0f, 0.0f, 0.0f);
+            gl.Rotate(rotation_y, 0.0f, 1.0f, 0.0f);
+            gl.Rotate(rotation_z, 0.0f, 0.0f, 1.0f);
+            gl.Scale(scale, scale, scale);
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
             m_scene_dart.Draw();
         }
 
-        public void DrawBoard(OpenGL gl)
+        public void DrawBoard(OpenGL gl, float scale)
         {
-            gl.Translate(0f, 0f, -14f);
-            gl.Scale(0.1f, 0.1f, 0.1f);
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_MODULATE);
+            gl.Translate(0f, m_board_position, 1f);
+            gl.Scale(scale*0.1f + 0.1f, scale * 0.1f + 0.1f, scale * 0.1f + 0.1f);
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
             m_scene_board.Draw();
         }
 
@@ -277,10 +582,11 @@ namespace AssimpSample
             gl.Translate(0f, -10f, 0f);
             gl.Rotate(90f, 0f, 0f);
             gl.Begin(OpenGL.GL_QUADS);
-            gl.Vertex(10.0f,-20.0f);
-            gl.Vertex(-10.0f, -20.0f);
-            gl.Vertex(-10.0f, 20.0f);
-            gl.Vertex(10.0f, 20.0f);
+                gl.Normal(0f, 1f, 0f);
+                gl.Vertex(10.0f,-5.0f);
+                gl.Vertex(-10.0f, -5.0f);
+                gl.Vertex(-10.0f, 20.0f);
+                gl.Vertex(10.0f, 20.0f);
             gl.End();
         }
 
@@ -293,10 +599,11 @@ namespace AssimpSample
                     gl.Translate(-10f, 0f, 0f);
                     gl.Rotate(0f, -90f, 0f);
                     gl.Begin(OpenGL.GL_QUADS);
-                    gl.Vertex(20.0f, -10.0f);
-                    gl.Vertex(-20.0f, -10.0f);
-                    gl.Vertex(-20.0f, 10.0f);
-                    gl.Vertex(20.0f, 10.0f);
+                        gl.Normal(1f, 0f, 0f);
+                        gl.Vertex(20.0f, -10.0f); //bottom left
+                        gl.Vertex(-5.0f, -10.0f); //bottom right
+                        gl.Vertex(-5.0f, 10.0f);  //top right
+                        gl.Vertex(20.0f, 10.0f);  //top left
                     gl.End();
                     break;
                 case "RIGHT":
@@ -304,21 +611,23 @@ namespace AssimpSample
                     gl.Translate(10f, 0f, 0f);
                     gl.Rotate(0f, 90f, 0f);
                     gl.Begin(OpenGL.GL_QUADS);
-                    gl.Vertex(20.0f, -10.0f);
-                    gl.Vertex(-20.0f, -10.0f);
-                    gl.Vertex(-20.0f, 10.0f);
-                    gl.Vertex(20.0f, 10.0f);
+                        gl.Normal(1f, 0f, 0f); 
+                        gl.Vertex(5.0f, -10.0f); //bottom right
+                        gl.Vertex(-20.0f, -10.0f); //top right
+                        gl.Vertex(-20.0f, 10.0f);//top left
+                        gl.Vertex(5.0f, 10.0f);//bottom left
                     gl.End();
                     break;
                 case "BACK":
                     gl.Color(0.137f, 0.419f, 0.556f);
-                    gl.Translate(0f, 0f, -20f);
+                    gl.Translate(0f, 0f, -5f);
                     gl.Rotate(180f, 0f, -90f);
                     gl.Begin(OpenGL.GL_QUADS);
-                    gl.Vertex(-10.0f, 10.0f);
-                    gl.Vertex(10.0f, 10.0f);
-                    gl.Vertex(10.0f, -10.0f);
-                    gl.Vertex(-10.0f, -10.0f);
+                        gl.Normal(0f, 0f, 1f);
+                        gl.Vertex(-10.0f, 10.0f); //bottom left
+                    gl.Vertex(10.0f, 10.0f); //bottom right
+                    gl.Vertex(10.0f, -10.0f); //top right
+                    gl.Vertex(-10.0f, -10.0f); //top left
                     gl.End();
                     break;
                 default:
@@ -326,10 +635,11 @@ namespace AssimpSample
                     gl.Translate(0f, 0f, 20f);
                     gl.Rotate(0f, 0f, -90f);
                     gl.Begin(OpenGL.GL_QUADS);
-                    gl.Vertex(-10.0f, 10.0f);
-                    gl.Vertex(10.0f, 10.0f);
-                    gl.Vertex(10.0f, -10.0f);
-                    gl.Vertex(-10.0f, -10.0f);
+                        gl.Normal(0f, 0f, 1f);
+                        gl.Vertex(-10.0f, 10.0f);
+                        gl.Vertex(10.0f, 10.0f);
+                        gl.Vertex(10.0f, -10.0f);
+                        gl.Vertex(-10.0f, -10.0f);
                     gl.End();
                     break;
             }
@@ -340,8 +650,8 @@ namespace AssimpSample
         public void DrawPedestal(OpenGL gl)
         {
             gl.Color(0f, 0f, 0f);
-            gl.Translate(0, -4f, -15f);
-            gl.Scale(2f, 6f, 1f);
+            gl.Translate(0, -4f, 0f);
+            gl.Scale(4f, 9f, 1f);
             Cube cube = new Cube();
             cube.Render(gl, RenderMode.Render);
         }
@@ -354,6 +664,187 @@ namespace AssimpSample
             gl.DrawText(0, 50, 1.0f, 0.0f, 0.0f, "Arial Bold", 14, "Prezime: Kalmar");
             gl.DrawText(0, 20, 1.0f, 0.0f, 0.0f, "Arial Bold", 14, "Sifra zad.: 9.2");
         }
+        #endregion
+
+        #region Animation
+        public void AnimationStart()
+        {
+            m_dart1_position_x = 5f;
+            m_dart2_position_x = 6f;
+            m_dart3_position_x = 7f;
+            m_dart1_position_y = 0f;
+            m_dart2_position_y = 0f;
+            m_dart3_position_y = 0f;
+            m_dart1_position_z = 20f;
+            m_dart2_position_z = 20f;
+            m_dart3_position_z = 20f;
+            m_dart1_rotation_x = 90f;
+            m_dart2_rotation_x = 90f;
+            m_dart3_rotation_x = 90f;
+            m_dart1_rotation_y = 0f;
+            m_dart2_rotation_y = 0f;
+            m_dart3_rotation_y = 0f;
+            m_dart1_rotation_z = 0f;
+            m_dart2_rotation_z = 0f;
+            m_dart3_rotation_z = 0f;
+            m_dart_scale = 0.2f;
+            m_board_scale = 0f;
+            m_board_position = 0f;
+            timer1 = new DispatcherTimer();
+            timer1.Interval = TimeSpan.FromMilliseconds(10);
+            timer1.Tick += new EventHandler(ThrowDart);
+            timer1.Start();
+        }
+
+        public void ThrowDart(object sender, EventArgs e)
+        {
+            if (m_dart1_position_x > 0)
+            {
+                m_dart1_position_x -= 0.1f;
+                if(m_dart1_rotation_x > 20)
+                {
+                    m_dart1_rotation_x -= 1f;
+                }
+            }else if (m_dart1_rotation_x > 20)
+            {
+                m_dart1_rotation_x -= 1f;
+            }else if(m_dart1_position_z > 1f)
+            {
+                timer1.Interval = TimeSpan.FromMilliseconds(0.3);
+                if (m_dart1_rotation_x > 0)
+                {
+                    m_dart1_rotation_x -= 0.2f;
+                }
+                m_dart1_position_z -= 0.1f;
+                m_dart1_position_x -= 0.015f;
+                m_dart1_rotation_x -= 0.03f;
+                m_dart1_position_y -= 0.005f;
+            }
+            else
+            {
+                timer1.Stop();
+                SecondDart();
+            }
+        }
+
+        public void SecondDart()
+        {
+            timer2 = new DispatcherTimer();
+            timer2.Interval = TimeSpan.FromMilliseconds(10);
+            timer2.Tick += new EventHandler(ThrowDart2);
+            timer2.Start();
+        }
+
+        public void ThrowDart2(object sender, EventArgs e)
+        {
+            if (m_dart2_position_x > 0)
+            {
+                m_dart2_position_x -= 0.1f;
+                if (m_dart2_rotation_x > 20)
+                {
+                    m_dart2_rotation_x -= 1f;
+                }
+            }
+            else if (m_dart2_rotation_x > 20)
+            {
+                m_dart2_rotation_x -= 1f;
+            }
+            else if (m_dart2_position_z > 1f)
+            {
+                timer2.Interval = TimeSpan.FromMilliseconds(0.3);
+                if (m_dart2_rotation_x > 0)
+                {
+                    m_dart2_rotation_x -= 0.2f;
+                }
+                m_dart2_position_z -= 0.1f;
+                m_dart2_position_x += 0.5f;
+                m_dart2_rotation_x -= 0.03f;
+                m_dart2_position_y -= 0.015f;
+            }
+            else
+            {
+                timer2.Stop();
+                ScaleBoard();
+            }
+        }
+        public void ScaleBoard()
+        {
+            timer3 = new DispatcherTimer();
+            timer3.Interval = TimeSpan.FromMilliseconds(10);
+            timer3.Tick += new EventHandler(ScaleBoardEv);
+            timer3.Start();
+        }
+
+        public void ScaleBoardEv(object sender, EventArgs e)
+        {
+            if (m_board_scale < 2)
+            {
+                m_board_scale += 0.2f;
+            }
+            else
+            {
+                timer3.Stop();
+                ThirdDart();
+            }
+        }
+        public void ThirdDart()
+        {
+            timer4 = new DispatcherTimer();
+            timer4.Interval = TimeSpan.FromMilliseconds(10);
+            timer4.Tick += new EventHandler(ThrowDart3);
+            timer4.Start();
+        }
+
+        public void ThrowDart3(object sender, EventArgs e)
+        {
+            if (m_dart3_position_x > 0)
+            {
+                m_dart3_position_x -= 0.1f;
+                if (m_dart3_rotation_x > 20)
+                {
+                    m_dart3_rotation_x -= 1f;
+                }
+            }
+            else if (m_dart3_rotation_x > 20)
+            {
+                m_dart3_rotation_x -= 1f;
+            }
+            else if (m_dart3_position_x <= 0 && m_dart3_rotation_x <= 20 && m_dart3_position_z <= 20f && m_dart3_position_z > 1f)
+            {
+                timer4.Interval = TimeSpan.FromMilliseconds(0.3);
+                if (m_dart3_rotation_x > 0)
+                {
+                    m_dart3_rotation_x -= 0.11f;
+                }
+                m_dart3_position_z -= 0.1f;
+            }
+            else
+            {
+                timer4.Stop();
+                ScaleBoardDown();
+            }
+        }
+        public void ScaleBoardDown()
+        {
+            timer5 = new DispatcherTimer();
+            timer5.Interval = TimeSpan.FromMilliseconds(10);
+            timer5.Tick += new EventHandler(ScaleBoardDownEv);
+            timer5.Start();
+        }
+
+        public void ScaleBoardDownEv(object sender, EventArgs e)
+        {
+            if (m_board_scale > 0.2)
+            {
+                m_board_scale -= 0.2f;
+            }
+            else
+            {
+                timer5.Stop();
+                this.Animation = false;
+            }
+        }
+        #endregion
 
         /// <summary>
         ///  Implementacija IDisposable interfejsa.
