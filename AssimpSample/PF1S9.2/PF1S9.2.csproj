@@ -109,11 +109,19 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="3D Models\board\board.mtl" />
-    <None Include="3D Models\board\board.obj">
+    <None Include="3D Models\board\11721_darboard_V4_L3.mtl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="3D Models\dart\dart.obj">
+    <None Include="3D Models\board\11750_throwing_dart_v1_L3.mtl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="3D Models\board\dartboard.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="3D Models\dart\11750_throwing_dart_v1_L3.mtl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="3D Models\dart\11750_throwing_dart_v1_L3.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="app.config" />
@@ -129,10 +137,18 @@
     <None Include="Dependencies\SharpGL.WPF.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\pedestal.jpg" />
     <Resource Include="images\brick.jpg" />
-    <Resource Include="images\ceiling.jpg" />
     <Resource Include="images\floor.jpg" />
-    <Resource Include="3D Models\board\dartboard.jpg" />
+    <Resource Include="3D Models\board\dartboard.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="3D Models\board\throwing_dart_diffuse.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="3D Models\dart\throwing_dart_diffuse.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="AssimpLib\Assimp32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -6,10 +6,6 @@
 // <summary>Klasa koja enkapsulira OpenGL programski kod.</summary>
 // -----------------------------------------------------------------------
 using System;
-using Assimp;
-using System.IO;
-using System.Reflection;
-using SharpGL.SceneGraph;
 using SharpGL.SceneGraph.Primitives;
 using SharpGL.SceneGraph.Quadrics;
 using SharpGL.SceneGraph.Core;
@@ -92,7 +88,10 @@ namespace AssimpSample
         private Sphere redLapmp;
 
         private uint[] m_textures;
-        private string[] m_textureFiles = { "..//..//images//brick.jpg"};
+        private string[] m_textureFiles = { "..//..//images//brick.jpg", "..//..//images//floor.jpg" , "..//..//images//pedestal.jpg" };
+
+        private enum TextureObjects { Brick = 0, Floor, Pedestal };
+        private readonly int m_textureCount = Enum.GetNames(typeof(TextureObjects)).Length;
 
         /// <summary>
         ///	 Sirina OpenGL kontrole u pikselima.
@@ -178,91 +177,10 @@ namespace AssimpSample
             get { return animation; }
             set { animation = value; }
         }
-
-        public float Dart1_X
-        {
-            get { return m_dart1_position_x; }
-            set { m_dart1_position_x = value; }
-        }
-        public float Dart2_X
-        {
-            get { return m_dart2_position_x; }
-            set { m_dart2_position_x = value; }
-        }
-        public float Dart3_X
-        {
-            get { return m_dart3_position_x; }
-            set { m_dart3_position_x = value; }
-        }
-        public float Dart1_Y
-        {
-            get { return m_dart1_position_y; }
-            set { m_dart1_position_y = value; }
-        }
-        public float Dart2_Y
-        {
-            get { return m_dart2_position_y; }
-            set { m_dart2_position_y = value; }
-        }
-        public float Dart3_Y
-        {
-            get { return m_dart3_position_y; }
-            set { m_dart3_position_y = value; }
-        }
-        public float Dart1_Z
-        {
-            get { return m_dart1_position_z; }
-            set { m_dart1_position_z = value; }
-        }
-        public float Dart2_Z
-        {
-            get { return m_dart2_position_z; }
-            set { m_dart2_position_z = value; }
-        }
-        public float Dart3_Z
-        {
-            get { return m_dart3_position_z; }
-            set { m_dart3_position_z = value; }
-        }
-        public float Dart1_rotation_x
-        {
-            get { return m_dart1_rotation_x; }
-            set { m_dart1_rotation_x = value; }
-        }
-        public float Dart2_rotation_x
-        {
-            get { return m_dart2_rotation_x; }
-            set { m_dart2_rotation_x = value; }
-        }
-        public float Dart3_rotation_x
-        {
-            get { return m_dart3_rotation_x; }
-            set { m_dart3_rotation_x = value; }
-        }
-        public float Dart1_rotation_y
-        {
-            get { return m_dart1_rotation_y; }
-            set { m_dart1_rotation_y = value; }
-        }
-        public float Dart2_rotation_y
-        {
-            get { return m_dart2_rotation_y; }
-            set { m_dart2_rotation_y = value; }
-        }
-        public float Dart3_rotation_y
-        {
-            get { return m_dart3_rotation_y; }
-            set { m_dart3_rotation_y = value; }
-        }
         public float Dart_scale
         {
             get { return m_dart_scale; }
             set { m_dart_scale = value; }
-        }
-        public float Board_scale
-        {
-            get { return m_board_scale; }
-            set { m_board_scale = value; }
         }
         public float Board_position
         {
@@ -293,11 +211,11 @@ namespace AssimpSample
         /// </summary>
         public World(String scenePathBoard, String sceneFileNameBoard, String scenePathDart, String sceneFileNameDart, int width, int height, OpenGL gl)
         {
+            m_textures = new uint[m_textureCount];
             this.m_scene_board = new AssimpScene(scenePathBoard, sceneFileNameBoard, gl);
             this.m_scene_dart = new AssimpScene(scenePathDart, sceneFileNameDart, gl);
             this.m_width = width;
             this.m_height = height;
-            m_textures = new uint[1];
         }
 
         /// <summary>
@@ -317,12 +235,15 @@ namespace AssimpSample
         /// </summary>
         public void Initialize(OpenGL gl)
         {
+
+
             gl.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             gl.Color(1f, 0f, 0f);
             // Model sencenja na flat (konstantno)
             gl.Enable(OpenGL.GL_DEPTH_TEST);
             gl.Enable(OpenGL.GL_CULL_FACE);
             gl.ShadeModel(OpenGL.GL_FLAT);
+
 
             gl.Enable(OpenGL.GL_COLOR_MATERIAL);
             gl.ColorMaterial(OpenGL.GL_FRONT, OpenGL.GL_AMBIENT_AND_DIFFUSE);
@@ -351,8 +272,8 @@ namespace AssimpSample
              gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_S, OpenGL.GL_REPEAT);
              gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_T, OpenGL.GL_REPEAT);
 
-            gl.GenTextures(1, m_textures);
-            for (int i = 0; i < 1; ++i)
+            gl.GenTextures(m_textureCount, m_textures);
+            for (int i = 0; i < m_textureCount; ++i)
             {
                 // Pridruzi teksturu odgovarajucem identifikatoru
                 gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[i]);
@@ -533,6 +454,8 @@ namespace AssimpSample
         {
 
             float[] pos = new float[] { 0f, 10f, 10.0f, 1.0f };
+            float[] ambient = new float[] { 0.8f, 0.8f, 0.5f, 1.0f };
+            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, ambient);
             gl.Color(0.8f, 0.8f, 0.5f);
             gl.Translate(pos[0], pos[1], pos[2]);
             yellowLamp.Material.Bind(gl);
@@ -562,8 +485,8 @@ namespace AssimpSample
             gl.Rotate(rotation_y, 0.0f, 1.0f, 0.0f);
             gl.Rotate(rotation_z, 0.0f, 0.0f, 1.0f);
             gl.Scale(scale, scale, scale);
-            gl.Disable(OpenGL.GL_TEXTURE_2D);
             m_scene_dart.Draw();
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
         }
 
         public void DrawBoard(OpenGL gl, float scale)
@@ -572,92 +495,128 @@ namespace AssimpSample
             gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_MODULATE);
             gl.Translate(0f, m_board_position, 1f);
             gl.Scale(scale*0.1f + 0.1f, scale * 0.1f + 0.1f, scale * 0.1f + 0.1f);
-            gl.Disable(OpenGL.GL_TEXTURE_2D);
             m_scene_board.Draw();
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
         }
 
         public void DrawFloor(OpenGL gl)
         {
             gl.Color(0.91f, 0.76f, 0.65f);
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.MatrixMode(OpenGL.GL_TEXTURE);
+            gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[(int)TextureObjects.Floor]);
+            gl.LoadIdentity();
+            gl.Scale(5, 5, 5);
+            gl.MatrixMode(OpenGL.GL_MODELVIEW);
             gl.Translate(0f, -10f, 0f);
             gl.Rotate(90f, 0f, 0f);
             gl.Begin(OpenGL.GL_QUADS);
                 gl.Normal(0f, 1f, 0f);
-                gl.Vertex(10.0f,-5.0f);
-                gl.Vertex(-10.0f, -5.0f);
-                gl.Vertex(-10.0f, 20.0f);
-                gl.Vertex(10.0f, 20.0f);
+                gl.TexCoord(1.0f, 1.0f);
+                gl.Vertex(10.0f,-5.0f); //top right
+                gl.TexCoord(0.0f, 0.0f);
+                gl.Vertex(-10.0f, -5.0f); // top left
+                gl.TexCoord(0.0f, 1.0f);
+                gl.Vertex(-10.0f, 20.0f); //bottom left
+                gl.TexCoord(1.0f, 0.0f);
+                gl.Vertex(10.0f, 20.0f); //bottom right
             gl.End();
+
+            gl.MatrixMode(OpenGL.GL_TEXTURE);
+            gl.TexEnv(OpenGL.GL_TEXTURE_ENV, OpenGL.GL_TEXTURE_ENV_MODE, OpenGL.GL_MODULATE);
+            gl.LoadIdentity();
+            gl.Scale(1, 1, 1);
+            gl.MatrixMode(OpenGL.GL_MODELVIEW);
+
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
         }
 
         public void DrawWalls(OpenGL gl, string wall)
         {
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[(int)TextureObjects.Brick]);
             switch (wall)
             {
                 case "LEFT":
-                    gl.Color(0.137f, 0.419f, 0.556f);
                     gl.Translate(-10f, 0f, 0f);
                     gl.Rotate(0f, -90f, 0f);
                     gl.Begin(OpenGL.GL_QUADS);
                         gl.Normal(1f, 0f, 0f);
+                        gl.TexCoord(0.0f, 0.0f);
                         gl.Vertex(20.0f, -10.0f); //bottom left
+                        gl.TexCoord(1.0f, 0.0f);
                         gl.Vertex(-5.0f, -10.0f); //bottom right
+                        gl.TexCoord(1.0f, 1.0f);
                         gl.Vertex(-5.0f, 10.0f);  //top right
+                        gl.TexCoord(0.0f, 1.0f);
                         gl.Vertex(20.0f, 10.0f);  //top left
                     gl.End();
                     break;
                 case "RIGHT":
-                    gl.Color(0.137f, 0.419f, 0.556f);
                     gl.Translate(10f, 0f, 0f);
                     gl.Rotate(0f, 90f, 0f);
                     gl.Begin(OpenGL.GL_QUADS);
-                        gl.Normal(1f, 0f, 0f); 
+                        gl.Normal(1f, 0f, 0f);
+                        gl.TexCoord(0.0f, 0.0f);
                         gl.Vertex(5.0f, -10.0f); //bottom right
+                        gl.TexCoord(1.0f, 0.0f);
                         gl.Vertex(-20.0f, -10.0f); //top right
+                        gl.TexCoord(1.0f, 1.0f);
                         gl.Vertex(-20.0f, 10.0f);//top left
+                        gl.TexCoord(0.0f, 1.0f);
                         gl.Vertex(5.0f, 10.0f);//bottom left
                     gl.End();
                     break;
                 case "BACK":
-                    gl.Color(0.137f, 0.419f, 0.556f);
                     gl.Translate(0f, 0f, -5f);
                     gl.Rotate(180f, 0f, -90f);
                     gl.Begin(OpenGL.GL_QUADS);
                         gl.Normal(0f, 0f, 1f);
+                        gl.TexCoord(0.0f, 0.0f);
                         gl.Vertex(-10.0f, 10.0f); //bottom left
-                    gl.Vertex(10.0f, 10.0f); //bottom right
-                    gl.Vertex(10.0f, -10.0f); //top right
-                    gl.Vertex(-10.0f, -10.0f); //top left
+                        gl.TexCoord(0.0f, 1.0f);
+                        gl.Vertex(10.0f, 10.0f); //bottom right
+                        gl.TexCoord(1.0f, 1.0f);
+                        gl.Vertex(10.0f, -10.0f); //top right
+                        gl.TexCoord(1.0f, 0.0f);
+                        gl.Vertex(-10.0f, -10.0f); //top left
                     gl.End();
                     break;
                 default:
-                    gl.Color(0.137f, 0.419f, 0.556f);
                     gl.Translate(0f, 0f, 20f);
                     gl.Rotate(0f, 0f, -90f);
                     gl.Begin(OpenGL.GL_QUADS);
                         gl.Normal(0f, 0f, 1f);
-                        gl.Vertex(-10.0f, 10.0f);
-                        gl.Vertex(10.0f, 10.0f);
-                        gl.Vertex(10.0f, -10.0f);
-                        gl.Vertex(-10.0f, -10.0f);
+                        gl.TexCoord(1.0f, 1.0f);
+                        gl.Vertex(-10.0f, 10.0f);//top left
+                        gl.TexCoord(1.0f, 0.0f);
+                        gl.Vertex(10.0f, 10.0f);//bottom left
+                        gl.TexCoord(0.0f, 0.0f);
+                        gl.Vertex(10.0f, -10.0f);//bottom right
+                        gl.TexCoord(0.0f, 1.0f);
+                        gl.Vertex(-10.0f, -10.0f);//top right
                     gl.End();
                     break;
             }
-               
+
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
 
         }
 
         public void DrawPedestal(OpenGL gl)
         {
-            gl.Color(0f, 0f, 0f);
+            gl.Enable(OpenGL.GL_TEXTURE_2D);
+            gl.BindTexture(OpenGL.GL_TEXTURE_2D, m_textures[(int)TextureObjects.Pedestal]);
             gl.Translate(0, -4f, 0f);
             gl.Scale(4f, 9f, 1f);
             Cube cube = new Cube();
             cube.Render(gl, RenderMode.Render);
+            gl.Disable(OpenGL.GL_TEXTURE_2D);
         }
 
         public void DrawInfo(OpenGL gl)
         {
+            gl.DrawText3D("Arial Bold", 14, 0, 0, "");
             gl.DrawText(0, 140, 1.0f, 0.0f, 0.0f, "Arial Bold", 14, "Predmet: Racunarska grafika");
             gl.DrawText(0, 110, 1.0f, 0.0f, 0.0f, "Arial Bold", 14, "Sk.god: 2021/22");
             gl.DrawText(0, 80, 1.0f, 0.0f, 0.0f, "Arial Bold", 14, "Ime: Lea");
